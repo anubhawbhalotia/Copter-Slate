@@ -2,7 +2,7 @@
 #include <bits/stdc++.h>
 #include <opencv2/imgproc.hpp>
 #include <fstream>
-#include "copterLib.h"
+#include "copterLib.h" //includes slateLib.h
 #define ROW 720
 #define COLUMN 1280
 VideoCapture cap("v4l2:///dev/video0");
