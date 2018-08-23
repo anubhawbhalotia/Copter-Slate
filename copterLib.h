@@ -2,9 +2,8 @@
 using namespace cv;
 using namespace std;
 #define ROW 720
-#define COLUMN 1280
-
-pair <long,long> thresholding(Mat obj,vector <Mat> spl,long terminatePixelCount=ROW*COLUMN)
+#define COLUMN 1080
+pair <long,long> getCentre(Mat src,long terminatePixelCount=ROW*COLUMN)
 {
 	//terminatePixelCount : scanning stops when total number of active 
 	//pixels founde exceeds this parameter 
@@ -16,13 +15,13 @@ pair <long,long> thresholding(Mat obj,vector <Mat> spl,long terminatePixelCount=
 	static int callCount=0;
 	callCount++;
 	long count=0;
-	for(i=0;i<spl[2].rows;i++)
+	for(i=0;i<src.rows;i++)
 	{
-		unsigned char *p=spl[2].ptr(i);
-		unsigned char *g=obj.ptr(i);
-		for(j=0;j<spl[2].cols;j++)
+		unsigned char *p=src.ptr(i);
+		unsigned char *g=src.ptr(i);
+		for(j=0;j<src.cols;j++)
 		{
-			if(*(p+j)>250)
+			if(*(p+j)>=250)
 			{	
 				//*(g+j)=250;
 				centre.first+=i;
@@ -40,7 +39,7 @@ pair <long,long> thresholding(Mat obj,vector <Mat> spl,long terminatePixelCount=
 		centre.first/=count;
 		centre.second/=count;
 	}
-	if(i==spl[2].rows)
+	if(i==src.rows)
 		cout<<"scanned completely"<<callCount<<" Count="<<count<<endl;
 	return centre;
 }
@@ -92,11 +91,12 @@ void drawSprite(int type,pair <int,int> centre,Mat obj,int radius=20)
 			*(obj.ptr(centre.first)+centre.second)=250;
 			break;
 		case 3: // points a square of desied thickness
+			initializeMatObject(obj);
 			if(centre.first==-1 || centre.second==-1)
 			{
 				break;
 			}
-			initializeMatObject(obj);
+			
 			centre.first=(centre.first-radius<0)?0+radius:centre.first;
 			centre.first=(centre.first+radius>ROW-1)?ROW-1-radius :centre.first;
 			centre.second=(centre.second-radius<0)?0+radius:centre.second;
@@ -111,4 +111,22 @@ void drawSprite(int type,pair <int,int> centre,Mat obj,int radius=20)
 			break;
 	}
 	prevCentre=centre;
+}
+void binarise(vector <Mat> &spl,Mat canavas)
+{
+	for(int i=0;i<spl[2].rows;i++)
+	{
+		unsigned char *red=spl[2].ptr(i);
+		unsigned char *green=spl[1].ptr(i);
+		unsigned char *blue=spl[0].ptr(i);
+		unsigned char *q=canavas.ptr(i);
+		for(int j=0;j<spl[2].cols;j++)
+		{
+			if(*(red+j)>=250 && *(blue+j)<250 && *(green+j)<250)
+			{
+				*(q+j)=250;
+			}
+
+		}
+	}
 }
