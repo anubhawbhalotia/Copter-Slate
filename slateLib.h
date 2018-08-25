@@ -65,11 +65,11 @@ vector < pair <int,int> > getLine(pair <int,int> a,pair <int,int> b)
 	}
 	return points;
 }
-void drawLine(vector < pair < int,int>> points,Mat obj,Vec3b colorLine)
+void drawPoints(vector < pair < int,int>> points,Mat obj,Vec3b color)
 {
 	for(vector <pair <int,int> > :: iterator it=points.begin();it!=points.end();it++)
 	{
-		obj.at<Vec3b>((*it).first,(*it).second)=colorLine;
+		obj.at<Vec3b>((*it).first,(*it).second)=color;
 		//*(obj.ptr((*it).first)+((*it).second))=250;
 	}
 }
