@@ -112,17 +112,18 @@ void drawSprite(int type,pair <int,int> centre,Mat obj,int radius=20)
 	}
 	prevCentre=centre;
 }
-void binarise(vector <Mat> &spl,Mat canavas)
+void binarise(vector <Mat> &spl,Mat canavas,int p1,int p2,int p3)
 {
+	//converts a BGR image to binary image where red part 
 	for(int i=0;i<spl[2].rows;i++)
 	{
-		unsigned char *red=spl[2].ptr(i);
-		unsigned char *green=spl[1].ptr(i);
-		unsigned char *blue=spl[0].ptr(i);
+		unsigned char *pr1=spl[p1].ptr(i);
+		unsigned char *pr2=spl[p2].ptr(i);
+		unsigned char *pr3=spl[p3].ptr(i);
 		unsigned char *q=canavas.ptr(i);
 		for(int j=0;j<spl[2].cols;j++)
 		{
-			if(*(red+j)>=250 && *(blue+j)<250 && *(green+j)<250)
+			if(*(pr1+j)>=250 && *(pr2+j)<250 && *(pr3+j)<250)
 			{
 				*(q+j)=250;
 			}
