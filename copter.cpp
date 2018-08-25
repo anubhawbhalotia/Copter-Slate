@@ -17,7 +17,7 @@ int main()
 	Mat canavas(ROW,COLUMN,CV_8UC3);
 	vector <Mat> spl;
 	Vec3b colorSprite={51,153,255};
-	Vec3b colorBgCopter={0,255,128};
+	Vec3b colorBgCopter={0,255,109};
 	Vec3b colorCentre={255,255,255};
 	// uchar spriteColor[]={255,255,0};
 	 //uchar bgColor[]={0,204,0};

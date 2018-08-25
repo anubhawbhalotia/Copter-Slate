@@ -1,7 +1,7 @@
 using namespace cv;
 using namespace std;
 #define ROW 720
-#define COLUMN 1080
+#define COLUMN 1280
 int initializeMatObject(Mat obj,int colorDimension,Vec3b color)
 {
 	cout<<"initializeMatObject"<<colorDimension<<endl;

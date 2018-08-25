@@ -2,7 +2,7 @@
 using namespace cv;
 using namespace std;
 #define ROW 720
-#define COLUMN 1080
+#define COLUMN 1280
 pair <long,long> getCentre(Mat src,long terminatePixelCount,Vec3b colorCentre)
 {
 	//terminatePixelCount : scanning stops when total number of active 
@@ -120,14 +120,14 @@ void drawSprite(int type,pair <int,int> centre,Mat obj,Vec3b colorSprite,Vec3b b
 void binarise(Mat src,Mat obj,int p1,int p2,int p3,Vec3b colorCentre)
 {
 	//converts a BGR image to binary image where red part 
-	for(int i=0;i<src.rows;i++)
+	for(int i=0;i<ROW;i++)
 	{
 		// unsigned char *pr1=spl[p1].ptr(i);
 		// unsigned char *pr2=spl[p2].ptr(i);
 		// unsigned char *pr3=spl[p3].ptr(i);
 		// unsigned char *q=canavas.ptr(i);
 		
-		for(int j=0;j<src.cols;j++)
+		for(int j=0;j<COLUMN;j++)
 		{
 			Vec3b color = src.at<Vec3b>(i,j);
 			// if(*(pr1+j)>=250 && *(pr2+j)<250 && *(pr3+j)<250)
