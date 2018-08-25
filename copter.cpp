@@ -22,7 +22,6 @@ int main()
 	// uchar spriteColor[]={255,255,0};
 	 //uchar bgColor[]={0,204,0};
 	Vec3b colorBlack={0,0,0};
-	int colorDimension=3;
 	long long while1count=0;
 	while(1)
 	{
@@ -32,13 +31,12 @@ int main()
 		split(original,spl);
 		imshow("ORIGINAL",original);
 		imshow("spl2",spl[2]);
-		initializeMatObject(livePoint,1,colorBlack);
+		initializeMatObject(livePoint,colorBlack);
 		binarise(original,livePoint,2,1,0,colorCentre);
 		imshow("livePoint",livePoint);
 		pair <int,int> centre=getCentre(livePoint,100,colorCentre);
 		int type=3;
-		cout<<"got"<<endl;
-		drawSprite(type,centre,canavas,colorSprite,colorBgCopter,colorDimension,20);
+		drawSprite(type,centre,canavas,colorSprite,colorBgCopter,20);
 		imshow("canavas",canavas);
 
 		waitKey(10);

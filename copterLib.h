@@ -44,7 +44,7 @@ pair <long,long> getCentre(Mat src,long terminatePixelCount,Vec3b colorCentre)
 }
 
 
-void drawSprite(int type,pair <int,int> centre,Mat obj,Vec3b colorSprite,Vec3b bgColor,int colorDimension,int radius)
+void drawSprite(int type,pair <int,int> centre,Mat obj,Vec3b colorSprite,Vec3b bgColor,int radius)
 {
 	static pair <int,int> prevCentre=make_pair(-2,-2);
 	static long long int delay=0;
@@ -56,7 +56,7 @@ void drawSprite(int type,pair <int,int> centre,Mat obj,Vec3b colorSprite,Vec3b b
 			{
 				break;
 			}
-			initializeMatObject(obj,colorDimension,bgColor);
+			initializeMatObject(obj,bgColor);
 			cout<<"done"<<endl;
 			centre.first=(centre.first-radius<0)?0+radius:centre.first;
 			centre.first=(centre.first+radius>ROW-1)?ROW-1-radius :centre.first;
@@ -98,7 +98,7 @@ void drawSprite(int type,pair <int,int> centre,Mat obj,Vec3b colorSprite,Vec3b b
 			{
 				break;
 			}
-			initializeMatObject(obj,colorDimension,bgColor);
+			initializeMatObject(obj,bgColor);
 			centre.first=(centre.first-radius<0)?0+radius:centre.first;
 			centre.first=(centre.first+radius>ROW-1)?ROW-1-radius :centre.first;
 			centre.second=(centre.second-radius<0)?0+radius:centre.second;

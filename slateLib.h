@@ -2,44 +2,14 @@ using namespace cv;
 using namespace std;
 #define ROW 720
 #define COLUMN 1280
-int initializeMatObject(Mat obj,int colorDimension,Vec3b color)
+int initializeMatObject(Mat obj,Vec3b color)
 {
-	cout<<"initializeMatObject"<<colorDimension<<endl;
-	int i,j;
-	if(colorDimension==1)
+	for(int i=0;i<ROW;i++)	
 	{
-		for(i=0;i<ROW;i++)	
+		for(int j=0;j<COLUMN;j++)
 		{
-			for(j=0;j<COLUMN;j++)
-			{
-				obj.at<Vec3b>(i,j)=color[0];
-			}
+			obj.at<Vec3b>(i,j)=color;
 		}
-	}
-	else if(colorDimension==2)
-	{
-		for(i=0;i<ROW;i++)	
-		{
-			for(j=0;j<COLUMN;j++)
-			{
-				obj.at<Vec3b>(i,j)=color;
-			}
-		}
-	}
-	else if(colorDimension==3)
-	{
-		//cout<<bgColor[0]<<" "<<bgColor[1]<<" "<<bgColor[2]<<endl;
-		for(i=0;i<ROW;i++)	
-		{
-			for(j=0;j<COLUMN;j++)
-			{
-				obj.at<Vec3b>(i,j)=color;
-			}
-		}
-	}
-	else 
-	{
-		return 0;
 	}
 	return 1;
 }
