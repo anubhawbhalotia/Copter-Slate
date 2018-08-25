@@ -3,7 +3,7 @@ using namespace cv;
 using namespace std;
 #define ROW 720
 #define COLUMN 1080
-pair <long,long> getCentre(Mat src,long terminatePixelCount=ROW*COLUMN)
+pair <long,long> getCentre(Mat src,long terminatePixelCount,Vec3b colorCentre)
 {
 	//terminatePixelCount : scanning stops when total number of active 
 	//pixels founde exceeds this parameter 
@@ -17,11 +17,10 @@ pair <long,long> getCentre(Mat src,long terminatePixelCount=ROW*COLUMN)
 	long count=0;
 	for(i=0;i<src.rows;i++)
 	{
-		unsigned char *p=src.ptr(i);
-		unsigned char *g=src.ptr(i);
 		for(j=0;j<src.cols;j++)
 		{
-			if(*(p+j)>=250)
+			Vec3b color=src.at<Vec3b>(i,j);
+			if(color==colorCentre)
 			{	
 				//*(g+j)=250;
 				centre.first+=i;
@@ -45,7 +44,7 @@ pair <long,long> getCentre(Mat src,long terminatePixelCount=ROW*COLUMN)
 }
 
 
-void drawSprite(int type,pair <int,int> centre,Mat obj,int radius=20)
+void drawSprite(int type,pair <int,int> centre,Mat obj,Vec3b colorSprite,Vec3b bgColor,int colorDimension,int radius)
 {
 	static pair <int,int> prevCentre=make_pair(-2,-2);
 	static long long int delay=0;
@@ -57,18 +56,20 @@ void drawSprite(int type,pair <int,int> centre,Mat obj,int radius=20)
 			{
 				break;
 			}
-			initializeMatObject(obj);
+			initializeMatObject(obj,colorDimension,bgColor);
+			cout<<"done"<<endl;
 			centre.first=(centre.first-radius<0)?0+radius:centre.first;
 			centre.first=(centre.first+radius>ROW-1)?ROW-1-radius :centre.first;
 			centre.second=(centre.second-radius<0)?0+radius:centre.second;
 			centre.second=(centre.second+radius>COLUMN-1)?COLUMN-1-radius :centre.second;
 			for(int i=centre.first-radius;i<centre.first+radius;i++)
 			{
-				*(obj.ptr(i)+centre.second)=250;
+				obj.at<Vec3b>(i,centre.second)=colorSprite;
 			}
 			for(int i=centre.second-radius;i<centre.second+radius;i++)
 			{
-				*(obj.ptr(centre.first)+i)=250;
+				obj.at<Vec3b>(centre.first,i)=colorSprite;
+				
 			}
 			break;
 		case 2: //draw as thin contnuous line
@@ -86,17 +87,18 @@ void drawSprite(int type,pair <int,int> centre,Mat obj,int radius=20)
 			if(prevCentre.first!=-2 && prevCentre.second!=-2)
 			{
 				vector < pair <int,int> > points=getLine(centre,prevCentre);
-				drawLine(points,obj);
+				drawLine(points,obj,colorSprite);
 			}
-			*(obj.ptr(centre.first)+centre.second)=250;
+			obj.at<Vec3b>(centre.first,centre.second)=colorSprite;
+			//*(obj.ptr(centre.first)+centre.second)=250;
 			break;
 		case 3: // points a square of desied thickness
-			initializeMatObject(obj);
+			
 			if(centre.first==-1 || centre.second==-1)
 			{
 				break;
 			}
-			
+			initializeMatObject(obj,colorDimension,bgColor);
 			centre.first=(centre.first-radius<0)?0+radius:centre.first;
 			centre.first=(centre.first+radius>ROW-1)?ROW-1-radius :centre.first;
 			centre.second=(centre.second-radius<0)?0+radius:centre.second;
@@ -105,27 +107,33 @@ void drawSprite(int type,pair <int,int> centre,Mat obj,int radius=20)
 			{
 				for(int j=centre.second-radius;j<centre.second+radius;j++)
 				{	
-					*(obj.ptr(i)+j)=250;
+					obj.at<Vec3b>(i,j)=colorSprite;
+					// obj.at<uchar>(i,j,1)=50;
+					// obj.at<uchar>(i,j,2)=50;
+					//*(obj.ptr(i)+j)=250;
 				}
 			}
 			break;
 	}
 	prevCentre=centre;
 }
-void binarise(vector <Mat> &spl,Mat canavas,int p1,int p2,int p3)
+void binarise(Mat src,Mat obj,int p1,int p2,int p3,Vec3b colorCentre)
 {
 	//converts a BGR image to binary image where red part 
-	for(int i=0;i<spl[2].rows;i++)
+	for(int i=0;i<src.rows;i++)
 	{
-		unsigned char *pr1=spl[p1].ptr(i);
-		unsigned char *pr2=spl[p2].ptr(i);
-		unsigned char *pr3=spl[p3].ptr(i);
-		unsigned char *q=canavas.ptr(i);
-		for(int j=0;j<spl[2].cols;j++)
+		// unsigned char *pr1=spl[p1].ptr(i);
+		// unsigned char *pr2=spl[p2].ptr(i);
+		// unsigned char *pr3=spl[p3].ptr(i);
+		// unsigned char *q=canavas.ptr(i);
+		
+		for(int j=0;j<src.cols;j++)
 		{
-			if(*(pr1+j)>=250 && *(pr2+j)<250 && *(pr3+j)<250)
+			Vec3b color = src.at<Vec3b>(i,j);
+			// if(*(pr1+j)>=250 && *(pr2+j)<250 && *(pr3+j)<250)
+			if(color[p1]>=250 && color[p2]<250 && color[p3]<250)
 			{
-				*(q+j)=250;
+				obj.at<Vec3b>(i,j)=colorCentre;
 			}
 
 		}

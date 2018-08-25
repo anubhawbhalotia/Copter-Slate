@@ -2,15 +2,46 @@ using namespace cv;
 using namespace std;
 #define ROW 720
 #define COLUMN 1080
-void initializeMatObject(Mat obj)
+int initializeMatObject(Mat obj,int colorDimension,Vec3b color)
 {
+	cout<<"initializeMatObject"<<colorDimension<<endl;
 	int i,j;
-	for(i=0;i<obj.rows;i++)
+	if(colorDimension==1)
 	{
-		unsigned char *p=obj.ptr(i);
-		for(j=0;j<obj.cols;j++)
-			*(p+j)=0;
+		for(i=0;i<ROW;i++)	
+		{
+			for(j=0;j<COLUMN;j++)
+			{
+				obj.at<Vec3b>(i,j)=color[0];
+			}
+		}
 	}
+	else if(colorDimension==2)
+	{
+		for(i=0;i<ROW;i++)	
+		{
+			for(j=0;j<COLUMN;j++)
+			{
+				obj.at<Vec3b>(i,j)=color;
+			}
+		}
+	}
+	else if(colorDimension==3)
+	{
+		//cout<<bgColor[0]<<" "<<bgColor[1]<<" "<<bgColor[2]<<endl;
+		for(i=0;i<ROW;i++)	
+		{
+			for(j=0;j<COLUMN;j++)
+			{
+				obj.at<Vec3b>(i,j)=color;
+			}
+		}
+	}
+	else 
+	{
+		return 0;
+	}
+	return 1;
 }
 void invertImage(Mat obj)
 {
@@ -64,10 +95,11 @@ vector < pair <int,int> > getLine(pair <int,int> a,pair <int,int> b)
 	}
 	return points;
 }
-void drawLine(vector < pair < int,int>> points,Mat obj)
+void drawLine(vector < pair < int,int>> points,Mat obj,Vec3b colorLine)
 {
 	for(vector <pair <int,int> > :: iterator it=points.begin();it!=points.end();it++)
 	{
-		*(obj.ptr((*it).first)+((*it).second))=250;
+		obj.at<Vec3b>((*it).first,(*it).second)=colorLine;
+		//*(obj.ptr((*it).first)+((*it).second))=250;
 	}
 }

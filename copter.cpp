@@ -13,9 +13,17 @@ int main()
 		return -1;
 	}
 	Mat original(ROW,COLUMN,CV_8UC3);
-	Mat livePoint(ROW,COLUMN,CV_8UC1);
-	Mat canavas(ROW,COLUMN,CV_8UC1);
+	Mat livePoint(ROW,COLUMN,CV_8UC3);
+	Mat canavas(ROW,COLUMN,CV_8UC3);
 	vector <Mat> spl;
+	Vec3b colorSprite={51,153,255};
+	Vec3b colorBgCopter={0,255,128};
+	Vec3b colorCentre={255,255,255};
+	// uchar spriteColor[]={255,255,0};
+	 //uchar bgColor[]={0,204,0};
+	Vec3b colorBlack={0,0,0};
+	int colorDimension=3;
+	long long while1count=0;
 	while(1)
 	{
 		bool bSuccess=cap.read(original);
@@ -24,13 +32,15 @@ int main()
 		split(original,spl);
 		imshow("ORIGINAL",original);
 		imshow("spl2",spl[2]);
-		initializeMatObject(livePoint);
-		binarise(spl,livePoint,2,1,0);
+		initializeMatObject(livePoint,1,colorBlack);
+		binarise(original,livePoint,2,1,0,colorCentre);
 		imshow("livePoint",livePoint);
-		pair <int,int> centre=getCentre(livePoint,100);
+		pair <int,int> centre=getCentre(livePoint,100,colorCentre);
 		int type=3;
-		drawSprite(type,centre,canavas,20);
+		cout<<"got"<<endl;
+		drawSprite(type,centre,canavas,colorSprite,colorBgCopter,colorDimension,20);
 		imshow("canavas",canavas);
+
 		waitKey(10);
 	}
 	
